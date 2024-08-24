@@ -1,0 +1,18 @@
+name: teyuto_player_analytics
+description: A Flutter package for video playback analytics integration with Teyuto platform.
+version: 1.0.0
+homepage: https://github.com/teyuto/teyuto_flutter_player_analytics
+
+environment:
+  sdk: '>=2.12.0 <4.0.0'
+  flutter: ">=2.0.0"
+
+dependencies:
+  flutter:
+    sdk: flutter
+  http: ^0.13.3
+  video_player: ^2.1.6
+
+dev_dependencies:
+  flutter_test:
+    sdk: flutter
