@@ -1,4 +1,6 @@
-# Teyuto Flutter Player Analytics
+[![badge](https://img.shields.io/twitter/follow/teyuto?style=social)](https://twitter.com/intent/follow?screen_name=teyuto) &nbsp; [![badge](https://img.shields.io/github/stars/Teyuto/teyuto-player-sdk?style=social)](https://github.com/Teyuto/teyuto-player-sdk)
+![](https://github.com/Teyuto/.github/blob/production/assets/img/banner.png?raw=true)
+<h1 align="center">Teyuto Flutter Player Analytics</h1>
 
 A Flutter package for integrating video playback analytics with the Teyuto platform, specifically designed to work with Flutter's official `video_player` package.
 
