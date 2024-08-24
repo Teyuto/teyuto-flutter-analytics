@@ -14,7 +14,7 @@ This package requires the `video_player` package. Make sure to add it to your `p
 
 ```yaml
 dependencies:
-  video_player: ^2.7.2  # Replace with the latest version
+  video_player: ^2.7.2 
 ```
 
 ## Installation
