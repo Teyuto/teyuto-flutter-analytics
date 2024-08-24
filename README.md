@@ -1,63 +1,78 @@
-# Teyuto Player Analytics
+# Teyuto Flutter Player Analytics
 
-A Flutter package for integrating video playback analytics with the Teyuto platform.
+A Flutter package for integrating video playback analytics with the Teyuto platform, specifically designed to work with Flutter's official `video_player` package.
 
 ## Features
 
-- Track video playback events (play, pause, end)
-- Automatic reporting of playback progress
-- Customizable update intervals
-- Easy integration with Flutter's video_player package
+- Seamless integration with Flutter's `video_player` package
+- Automatic reporting of playback progress in Teyuto
+- Easy-to-use API for Flutter developers
 
-## Getting Started
+## Prerequisites
 
-To use this package, add `teyuto_player_analytics` as a dependency in your `pubspec.yaml` file.
+This package requires the `video_player` package. Make sure to add it to your `pubspec.yaml`:
+
+```yaml
+dependencies:
+  video_player: ^2.7.2  # Replace with the latest version
+```
+
+## Installation
+
+Add `teyuto_player_analytics` to your `pubspec.yaml`:
 
 ```yaml
 dependencies:
   teyuto_player_analytics: ^1.0.0
 ```
 
+Run `flutter pub get` to install the package.
+
 ## Usage
 
-Here's a simple example of how to use the Teyuto Player Analytics package:
+Here's a basic example of how to use the Teyuto Player Analytics package:
 
 ```dart
-import 'package:teyuto_player_analytics/teyuto_player_analytics.dart';
+import 'package:flutter/material.dart';
 import 'package:video_player/video_player.dart';
+import 'package:teyuto_player_analytics/teyuto_player_analytics.dart';
 
-// Initialize your VideoPlayerController
-final videoPlayerController = VideoPlayerController.network('https://example.com/video.mp4');
+class VideoPlayerScreen extends StatefulWidget {
+  @override
+  _VideoPlayerScreenState createState() => _VideoPlayerScreenState();
+}
 
-// Create an instance of TeyutoPlayerAnalyticsAdapter
-final analytics = TeyutoPlayerAnalyticsAdapter('your_teyuto_token');
+class _VideoPlayerScreenState extends State<VideoPlayerScreen> {
+  late VideoPlayerController _controller;
+  late TeyutoPlayerAnalyticsAdapter _analytics;
 
-// Initialize the analytics with your video player and video ID
-analytics.init(videoPlayerController, 'your_video_id');
+  @override
+  void initState() {
+    super.initState();
+    _controller = VideoPlayerController.network('https://example.com/video.mp4')
+      ..initialize().then((_) {
+        setState(() {});
+      });
 
-// Make sure to call destroy when disposing
-@override
-void dispose() {
-  videoPlayerController.dispose();
-  analytics.destroy();
-  super.dispose();
+    _analytics = TeyutoPlayerAnalyticsAdapter('your_teyuto_token');
+    _analytics.init(_controller, 'your_video_id');
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return VideoPlayer(_controller);
+  }
+
+  @override
+  void dispose() {
+    _controller.dispose();
+    _analytics.destroy();
+    super.dispose();
+  }
 }
 ```
 
-For a more detailed example, check out the `example` folder in this repository.
-
-## Configuration
-
-You can customize the analytics behavior by passing a custom `AnalyticsConfig` when creating the `TeyutoPlayerAnalyticsAdapter`:
-
-```dart
-final config = AnalyticsConfig(
-  updateInterval: Duration(milliseconds: 250),
-  reportInterval: Duration(seconds: 30),
-);
-
-final analytics = TeyutoPlayerAnalyticsAdapter('your_teyuto_token', config: config);
-```
+For more detailed examples, check out the `example` folder in this repository.
 
 ## Contributing
 
@@ -67,14 +82,3 @@ Contributions are welcome! Please feel free to submit a Pull Request.
 
 This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
 ```
-
-## CHANGELOG.md
-
-```markdown
-## 1.0.0
-
-* Initial release of Teyuto Player Analytics package
-* Support for tracking play, pause, and end events
-* Automatic reporting of playback progress
-* Customizable update and report intervals
-* Integration with Flutter's video_player package
