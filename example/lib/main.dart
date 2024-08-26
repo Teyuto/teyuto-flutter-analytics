@@ -32,12 +32,14 @@ class _VideoPlayerScreenState extends State<VideoPlayerScreen> {
   void initState() {
     super.initState();
     _controller = VideoPlayerController.networkUrl(
-      Uri.parse('https://flutter.github.io/assets-for-api-docs/assets/videos/bee.mp4'),
+      Uri.parse(
+          'https://flutter.github.io/assets-for-api-docs/assets/videos/bee.mp4'),
     )..initialize().then((_) {
         setState(() {});
       });
 
-    _analytics = TeyutoPlayerAnalyticsAdapter('your_token_here');
+    _analytics =
+        TeyutoPlayerAnalyticsAdapter('your_channel_here', 'your_token_here');
     _analytics.init(_controller, 'example_video_id');
   }
 

@@ -17,5 +17,7 @@ dev_dependencies:
   flutter_test:
     sdk: flutter
 
+  video_player_android: 2.6.0
+
 flutter:
   uses-material-design: true
