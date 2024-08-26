@@ -22,7 +22,7 @@ class AnalyticsError implements Exception {
 
 abstract class TeyutoPlayerAnalytics {
   final String channel;
-  final String token;
+  final String? token;  // Changed to nullable
   final String apiUrl;
   final AnalyticsConfig config;
   String? videoId;
@@ -34,7 +34,7 @@ abstract class TeyutoPlayerAnalytics {
 
   TeyutoPlayerAnalytics(
     this.channel,
-    this.token, {
+    this.token, {  // Changed to nullable
     this.apiUrl = "https://api.teyuto.tv/v1",
     this.config = const AnalyticsConfig(),
   });
@@ -72,12 +72,15 @@ abstract class TeyutoPlayerAnalytics {
       map['action'] = currentAction;
       map['end'] = end.toString();
       map['sp'] = secondsPlayed.toString();
+      
+      final headers = {'channel': channel};
+      if (token != null) {
+        headers['Authorization'] = token!;
+      }
+
       final response = await http.post(
         Uri.parse('$apiUrl/video/?f=action_update'),
-        headers: {
-          'channel': '$channel',
-          'Authorization': 'Bearer $token',
-        },
+        headers: headers,
         body: map,
       );
 
@@ -96,12 +99,14 @@ abstract class TeyutoPlayerAnalytics {
       map['time'] = time.toString();
       map['firstTime'] = (firstTimeEnter ? 1 : 0).toString();
 
+      final headers = {'channel': channel};
+      if (token != null) {
+        headers['Authorization'] = token!;
+      }
+
       final response = await http.post(
         Uri.parse('$apiUrl/video/?f=action_enter'),
-        headers: {
-          'channel': '$channel',
-          'Authorization': 'Bearer $token',
-        },
+        headers: headers,
         body: map,
       );
 
