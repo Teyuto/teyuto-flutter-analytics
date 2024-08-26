@@ -21,6 +21,7 @@ class AnalyticsError implements Exception {
 }
 
 abstract class TeyutoPlayerAnalytics {
+  final String channel;
   final String token;
   final String apiUrl;
   final AnalyticsConfig config;
@@ -31,7 +32,9 @@ abstract class TeyutoPlayerAnalytics {
   Timer? updateTimer;
   bool firstTimeEnter = true;
 
-  TeyutoPlayerAnalytics(this.token, {
+  TeyutoPlayerAnalytics(
+    this.channel,
+    this.token, {
     this.apiUrl = "https://api.teyuto.tv/v1",
     this.config = const AnalyticsConfig(),
   });
@@ -63,19 +66,19 @@ abstract class TeyutoPlayerAnalytics {
 
   Future updateTimeVideo(int time, int end) async {
     try {
+      final map = <String, dynamic>{};
+      map['id'] = videoId;
+      map['time'] = time.toString();
+      map['action'] = currentAction;
+      map['end'] = end.toString();
+      map['sp'] = secondsPlayed.toString();
       final response = await http.post(
         Uri.parse('$apiUrl/video/?f=action_update'),
         headers: {
+          'channel': '$channel',
           'Authorization': 'Bearer $token',
-          'Content-Type': 'application/json',
         },
-        body: jsonEncode({
-          'id': videoId,
-          'time': time,
-          'action': currentAction,
-          'end': end,
-          'sp': secondsPlayed,
-        }),
+        body: map,
       );
 
       if (response.statusCode != 200) {
@@ -88,22 +91,23 @@ abstract class TeyutoPlayerAnalytics {
 
   Future timeEnter(int time) async {
     try {
+      final map = <String, dynamic>{};
+      map['id'] = videoId;
+      map['time'] = time.toString();
+      map['firstTime'] = (firstTimeEnter ? 1 : 0).toString();
+
       final response = await http.post(
         Uri.parse('$apiUrl/video/?f=action_enter'),
         headers: {
+          'channel': '$channel',
           'Authorization': 'Bearer $token',
-          'Content-Type': 'application/json',
         },
-        body: jsonEncode({
-          'id': videoId,
-          'time': time,
-          'firstTime': firstTimeEnter ? 1 : 0,
-        }),
+        body: map,
       );
 
       if (response.statusCode == 200) {
         final jsonResponse = jsonDecode(response.body);
-        currentAction = jsonResponse['0'][0]['action'];
+        currentAction = jsonResponse[0]['action'];
         firstTimeEnter = false;
       } else {
         throw AnalyticsError('Error on time enter: ${response.body}');

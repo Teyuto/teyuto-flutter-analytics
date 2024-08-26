@@ -4,8 +4,10 @@ import 'teyuto_player_analytics_base.dart';
 class TeyutoPlayerAnalyticsAdapter extends TeyutoPlayerAnalytics {
   late VideoPlayerController _controller;
 
-  TeyutoPlayerAnalyticsAdapter(String token, {String apiUrl = "https://api.teyuto.tv/v1", AnalyticsConfig config = const AnalyticsConfig()}) 
-    : super(token, apiUrl: apiUrl, config: config);
+  TeyutoPlayerAnalyticsAdapter(String channel, String token,
+      {String apiUrl = "https://api.teyuto.tv/v1",
+      AnalyticsConfig config = const AnalyticsConfig()})
+      : super(channel, token, apiUrl: apiUrl, config: config);
 
   @override
   void attachEventListeners(dynamic player) {
