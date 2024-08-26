@@ -9,6 +9,7 @@ A Flutter package for integrating video playback analytics with the Teyuto platf
 - Seamless integration with Flutter's `video_player` package
 - Automatic reporting of playback progress in Teyuto
 - Easy-to-use API for Flutter developers
+- Support for both authenticated and unauthenticated usage
 
 ## Prerequisites
 
@@ -56,8 +57,13 @@ class _VideoPlayerScreenState extends State<VideoPlayerScreen> {
         setState(() {});
       });
 
-    _analytics = TeyutoPlayerAnalyticsAdapter('your_teyuto_token');
-    _analytics.init(_controller, 'your_video_id');
+    // Initialize with a token (for authenticated use)
+    _analytics = TeyutoPlayerAnalyticsAdapter('channel_public', 'user_auth_token');
+    
+    // Or initialize without a token (for unauthenticated use)
+    // _analytics = TeyutoPlayerAnalyticsAdapter('your_channel_id', null);
+    
+    _analytics.init(_controller, 'video_id');
   }
 
   @override
@@ -73,6 +79,10 @@ class _VideoPlayerScreenState extends State<VideoPlayerScreen> {
   }
 }
 ```
+
+Note that the `TeyutoPlayerAnalyticsAdapter` constructor now takes two parameters:
+1. `channel`: A required String representing your Teyuto channel ID.
+2. `token`: An optional String? (nullable String) representing your Teyuto authentication token. If not provided or set to null, the analytics will be sent without authentication.
 
 For more detailed examples, check out the `example` folder in this repository.
 
